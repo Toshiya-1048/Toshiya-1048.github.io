@@ -9,6 +9,8 @@ export const SpinePlayer = ({ selectedAsset, assetInfo }: SpinePlayerProps) => {
   const playerRef = useRef<ReturnType<typeof initializePlayer>>(null);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     if (containerRef.current) {
       playerRef.current = initializePlayer();
       

@@ -12,12 +12,13 @@ export const useAssetList = () => {
   const { fetchAssetList } = useAssetFetcher();
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     let mounted = true;
   
     const initialize = async () => {
       setIsLoading(true);
       try {
-        // キャッシュからアセットを取得
         const cachedAssets = getCachedAssets();
         if (cachedAssets) {
           console.log(MESSAGES.INFO.CACHE_USED);
@@ -28,7 +29,6 @@ export const useAssetList = () => {
           return;
         }
   
-        // キャッシュがない場合は新規取得
         const assets = await fetchAssetList();
         if (mounted) {
           setAssetList(assets);

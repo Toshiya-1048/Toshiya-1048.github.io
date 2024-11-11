@@ -7,6 +7,8 @@ export const useSpineResources = (): SpineResourcesState => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const loadSpinePlayerResources = async () => {
       try {
         const existingScript = document.querySelector(`script[src="${SPINE_URLS.SCRIPT}"]`);

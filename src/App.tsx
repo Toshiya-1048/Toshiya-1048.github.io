@@ -6,6 +6,7 @@ import ErrorBoundary from './components/common/ErrorBoundary';
 import { useSpineResources } from './hooks/useSpineResources';
 import { useAssetList } from './hooks/useAssetList';
 import { commonStyles, layoutStyles } from './styles';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
 }
 
 function AppContent() {
+  const [isClient, setIsClient] = useState(false);
   const { isLoaded, error: spineError } = useSpineResources();
   const { 
     selectedAsset, 
@@ -25,6 +27,10 @@ function AppContent() {
     isLoading,
     getAssetInfo 
   } = useAssetList();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   if (spineError) {
     return <ErrorMessage message={`Failed to load Spine resources: ${spineError.message}`} />;
@@ -44,7 +50,7 @@ function AppContent() {
         assetList={assetList}
         onAssetChange={setSelectedAsset}
       />
-      {isLoaded && selectedAsset && (
+      {isClient && isLoaded && selectedAsset && (
         <SpinePlayer 
           selectedAsset={selectedAsset} 
           assetInfo={getAssetInfo(selectedAsset)!}
